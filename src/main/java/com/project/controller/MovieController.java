@@ -1,6 +1,7 @@
 package com.project.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +25,13 @@ public class MovieController {
 	private MovieService service;
 
 	@GetMapping("/movies")
-	public ResponseEntity<ResponseData> getAllMovies(@RequestParam(name = "page") int page,
-			@RequestParam(name = "size") int size) {
+	public ResponseEntity<ResponseData> getAllMovies(@RequestParam(name = "page", defaultValue = "0") int page,
+			@RequestParam(name = "size", defaultValue = "10") int size) {
 		return ResponseEntity.ok(service.findAll(page, size));
 	}
 
 	@GetMapping("/movie/{id}")
-	public ResponseEntity<Movie> getById(@PathVariable int id) {
+	public ResponseEntity<Map<String, ?>> getById(@PathVariable int id) {
 		return ResponseEntity.ok(service.findById(id));
 	}
 
@@ -40,7 +41,7 @@ public class MovieController {
 		category.setId(categoryId);
 		return ResponseEntity.ok(service.findByCategory(category));
 	}
-	
+
 	@GetMapping("/movies/search")
 	public ResponseEntity<ResponseData> searchMovie(@RequestParam(name = "query") String keyword) {
 		return ResponseEntity.ok(service.findBySearch(keyword));
